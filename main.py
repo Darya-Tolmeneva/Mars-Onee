@@ -2,6 +2,7 @@ from flask import Flask
 from werkzeug.utils import redirect
 
 from data.users import User
+from data.jobs import Jobs
 from flask import render_template
 from forms.user import RegisterForm
 from flask_login import LoginManager
@@ -28,8 +29,9 @@ def main():
 
 @app.route("/")
 def index():
-    db_sess = db_session.create_session()
-    return render_template("index.html")
+    session = db_session.create_session()
+    job = session.query(Jobs).all()
+    return render_template("index.html", jobs=job)
 
 
 @app.route('/register', methods=['GET', 'POST'])
